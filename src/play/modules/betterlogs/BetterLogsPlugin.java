@@ -1,26 +1,14 @@
 package play.modules.betterlogs;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import play.Logger;
 import play.Play;
 import play.PlayPlugin;
 import play.classloading.ApplicationClasses.ApplicationClass;
-import play.mvc.Http.Cookie;
-import play.mvc.Http.Header;
-import play.mvc.Http.Request;
-import play.mvc.Scope.Params;
 
 public class BetterLogsPlugin extends PlayPlugin {
 	final static Pattern PREFIX_PATTERN = Pattern.compile("%file|%line|%class|%method|%relativeFile|%simpleClass|%package|%signature");
@@ -66,51 +54,6 @@ public class BetterLogsPlugin extends PlayPlugin {
 		}
 		argsPrefix = newArgsPrefix;
 		stringFormatPrefix = sb.toString();
-		
-		showParams = Boolean.parseBoolean(Play.configuration.getProperty("betterlogs.params", "false"));
-		showSession = Boolean.parseBoolean(Play.configuration.getProperty("betterlogs.session", "false"));;
-		showCookies = Boolean.parseBoolean(Play.configuration.getProperty("betterlogs.cookies", "false"));;
-		showHeaders = Boolean.parseBoolean(Play.configuration.getProperty("betterlogs.headers", "false"));;
-	}
-	
-	@Override
-	public void beforeActionInvocation(Method actionMethod) {
-		Request request = Request.current();
-		String log = "*** action method : %s ***\n";
-		ArrayList<String> toLog = new ArrayList<String>();
-		toLog.add(request.action);
-		if(showParams) {
-			toLog.add(renderParams());
-			log += "\t params -> %s";
-		}
-		if(showCookies) {
-			toLog.add(renderCookies());
-			log += "\t cookies -> %s";
-		}
-		if(showHeaders) {
-			toLog.add(renderHeaders());
-			log += "\t header -> %s";
-		}
-		if(toLog.size() > 0) {
-			System.out.println(toLog.size() + " -> " + toLog.toArray());
-			Object[] array = toLog.toArray();
-			Logger.info(log, array);
-		}
-	}
-	
-	private static String renderHeaders() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(Request.current().headers.values(), new TypeToken<Collection<Header>>() {}.getType());
-	}
-	
-	private static String renderCookies() {
-		HashMap<String, String> cookies = new HashMap<String, String>();
-		for(Entry<String, Cookie> cookie : Request.current().cookies.entrySet())
-			cookies.put(cookie.getKey(), cookie.getValue().value);
-		return new GsonBuilder().setPrettyPrinting().create().toJson(cookies, new TypeToken<Map<String, String>>() {}.getType());
-	}
-	
-	private static String renderParams() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(Params.current().all(), new TypeToken<Map<String, String[]>>() {}.getType());
 	}
 	
 	public static void log(String level, String clazz, String clazzSimpleName, String packageName, String method, String signature, String fileName, String relativeFileName, int line, Object[] args) {
