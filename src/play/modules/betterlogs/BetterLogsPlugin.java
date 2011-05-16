@@ -17,11 +17,6 @@ public class BetterLogsPlugin extends PlayPlugin {
 	static String stringFormatPrefix;
 	static ArrayList<String> argsPrefix;
 	
-	static boolean showParams = false;
-	static boolean showSession = false;
-	static boolean showCookies = false;
-	static boolean showHeaders = false;
-	
 	@Override
 	public void enhance(ApplicationClass applicationClass) throws Exception {
 		new BetterLogsEnhancer().enhanceThisClass(applicationClass);

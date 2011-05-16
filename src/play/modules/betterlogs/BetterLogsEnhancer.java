@@ -19,7 +19,6 @@ public class BetterLogsEnhancer extends Enhancer {
 					try {
 						if("play.Logger".equals(m.getClassName())) {
 							String name = m.getMethodName();
-							System.out.println(" method is " + behavior.toString());
 							//String level, String clazz, String clazzSimpleName, String packageName, String method, String signature, String fileName, String relativeFileName, int line, Object[] args
 							if("trace".equals(name) || "debug".equals(name) || "info".equals(name) || "warn".equals(name) || "error".equals(name) || "fatal".equals(name)) {
 								String code = String.format("{play.modules.betterlogs.BetterLogsPlugin.log(\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", %s, %s);}",
@@ -34,7 +33,6 @@ public class BetterLogsEnhancer extends Enhancer {
 										m.getLineNumber(),
 										"$args" // original args
 								);
-								System.out.println("would ' " + code + "'");
 								m.replace(code);
 							}
 						}
