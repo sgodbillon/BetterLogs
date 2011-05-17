@@ -31,14 +31,19 @@ public class BetterLogsPlugin extends PlayPlugin {
 	
 	static String stringFormatPrefix;
 	static ArrayList<String> argsPrefix;
+	static boolean disabled = false;
 	
 	@Override
 	public void enhance(ApplicationClass applicationClass) throws Exception {
-		new BetterLogsEnhancer().enhanceThisClass(applicationClass);
+		if(!disabled)
+			new BetterLogsEnhancer().enhanceThisClass(applicationClass);
 	}
 	
 	@Override
 	public void onConfigurationRead() {
+		disabled = "true".equals(Play.configuration.getProperty("betterlogs.disabled"));
+		if(disabled)
+			Logger.warn("BetterLogs is disabled. The classes are no more enhanced. If you enable it again, don't forget to clean your app before to force Play to enhance all the classes.");
 		ArrayList<String> newArgsPrefix = new ArrayList<String>();
 		String prefix = Play.configuration.getProperty("betterlogs.prefix", "[%relativeFile:%line] %method() ::");
 		Matcher matcher = PREFIX_PATTERN.matcher(prefix);

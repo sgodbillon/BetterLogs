@@ -1,16 +1,18 @@
-h1. Description
+h1. BetterLogs
+
+h2. Description
 
 p. This very simple module enhances the Play! Framework logs to bring some missing information such as the class name, the method name where the log has been called, its signature, the file name and the line.
 
 p. The latest version of this module can be fetched from github : "https://github.com/sgodbillon/BetterLogs":https://github.com/sgodbillon/BetterLogs
 
-h1. How To Use It
+h2. How To Use It
 
 * If you use Play! < 1.2, you can add it to your application.conf
 * If you use Play! 1.2 or above, you can add it to your dependancies
 * Customize the log pattern if you want
 
-h2. Example
+h3. Example
 
 bc. module.betterlogs=somedirectory/betterlogs
 # Custom prefix (this is the default one)
@@ -26,7 +28,7 @@ p. will give you
 
 bq. 12:47:05,499 INFO ~ [/app/controllers/Application.java:10] index() :: got 2 messages from somebody@gmail.com
 
-h1. Pattern Elements
+h2. Pattern Elements
 
 p. You can add the following elements to the prefix pattern :
 
@@ -39,10 +41,18 @@ p. You can add the following elements to the prefix pattern :
 * *%method* : the name of the method in which the log has been called (ex: @index@)
 * *%signature* : the signature of the method in which the log has been called (ex: @(Ljava/lang/String;Lplay/Logger;I)V@)
 
-h1. Use With Log4J
+h2. Options
+
+p. You can disable BetterLogs with the @betterlogs.disabled@ option :
+
+bq. betterlogs.disabled=true
+
+p. If you enable or disable BetterLogs, do not forget to clean your app before restarting Play, to force the framework to enhance all the classes again.
+
+h2. Use With Log4J
 
 p. This module just prepends a string matching the prefix pattern to log string. So it does not conflict with the log4j config file even if you redefine it.
 
-h1. Planned features
+h2. Planned features
 
 * print some action information (like http params, action name, cookies, etc.)

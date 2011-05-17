@@ -37,6 +37,14 @@ You can add the following elements to the prefix pattern :
 * **%method** : the name of the method in which the log has been called
 * **%signature** : the signature of the method in which the log has been called (ex: `(Ljava/lang/String;Lplay/Logger;I)V`)
 
+## Options
+
+You can disable BetterLogs with the @betterlogs.disabled@ option :
+
+    betterlogs.disabled=true
+
+If you enable or disable BetterLogs, do not forget to clean your app before restarting Play, to force the framework to enhance all the classes again.
+
 ## Use with log4j
 
 This module just prepends a string matching the prefix pattern to log string. So it does not conflict with the log4j config file even if you redefine it.
